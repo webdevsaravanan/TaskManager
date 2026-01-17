@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using TaskManager.Application.Common;
 
 namespace TaskManager.API.Filters;
 
@@ -9,12 +10,12 @@ public class ValidateModelFilter : IActionFilter
     {
         if (!context.ModelState.IsValid)
         {
-            context.Result = new BadRequestObjectResult(new
-            {
-                success = false,
-                message = "Validation failed",
-                errors = context.ModelState
-            });
+            context.Result = new BadRequestObjectResult(
+                ApiResponse<object>.Fail(
+                    "Validation failed",
+                    ErrorCodes.ValidationError
+                )
+                );
         }
     }
 
