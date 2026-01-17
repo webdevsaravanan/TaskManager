@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
+using TaskManager.Application.Common;
 
 namespace TaskManager.API.Middlewares;
 
@@ -29,12 +30,10 @@ public class ExceptionHandlingMiddleware
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             context.Response.ContentType = "application/json";
 
-            var response = new
-            {
-                success = false,
-                message = "Something went wrong",
-                errorCode = "SERVER_ERROR"
-            };
+            var response = ApiResponse<object>.Fail(
+               "Something went wrong",
+               ErrorCodes.ServerError
+           );
 
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TaskManager.Application.Common;
 using TaskManager.Application.DTOs;
 using TaskManager.Application.Interfaces;
 
@@ -24,6 +25,6 @@ public class TasksController : ControllerBase
     [HttpPost]
     public IActionResult Create(CreateTaskDto taskData)
     {
-        return Ok(new { success = true, taskData.Title });
+        return Ok(ApiResponse<string>.Ok(taskData.Title, "Task created"));
     }
 }
