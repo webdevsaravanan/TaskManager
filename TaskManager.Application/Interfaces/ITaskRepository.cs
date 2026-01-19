@@ -6,4 +6,5 @@ namespace TaskManager.Application.Interfaces;
 public interface ITaskRepository : IGenericRepository<TaskItem>
 {
     Task<IEnumerable<TaskItem>> GetByStatusAsync(string status);
+    Task<IEnumerable<TaskItem>> GetByIdAsync(Guid id);
 }
