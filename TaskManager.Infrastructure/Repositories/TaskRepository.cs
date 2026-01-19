@@ -17,4 +17,11 @@ public class TaskRepository : GenericRepository<TaskItem>, ITaskRepository
             .Where(t => t.Status == status)
             .ToListAsync();
     }
+    public async Task<IEnumerable<TaskItem>> GetByIdAsync(Guid Id)
+    {
+        return await _context.Tasks
+            .AsNoTracking()
+            .Where(t => t.Id == Id)
+            .ToListAsync();
+    }
 }
