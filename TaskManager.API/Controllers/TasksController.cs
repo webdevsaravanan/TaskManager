@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using TaskManager.Application.Common;
 using TaskManager.Application.DTOs;
 using TaskManager.Application.Interfaces;
@@ -16,15 +17,18 @@ public class TasksController : ControllerBase
         _taskService = taskService;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Get()
-    {
-        var tasks = await _taskService.GetAllAsync();
-        return Ok(tasks);
-    }
     [HttpPost]
-    public IActionResult Create(CreateTaskDto taskData)
+    public async Task<IActionResult> Create(CreateTaskDto taskData)
     {
+        await _taskService.CreateAsync(taskData.Title);
         return Ok(ApiResponse<string>.Ok(taskData.Title, "Task created"));
+    }
+    // GET /api/tasks?status=OPEN
+    [HttpGet]
+    public async Task<IActionResult> GetTasks([FromQuery] SearchTaskDto query)
+    {
+        var tasks = await _taskService.GetTasksAsync(query);
+
+        return Ok(ApiResponse<object>.Ok(tasks));
     }
 }

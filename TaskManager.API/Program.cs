@@ -2,8 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskManager.API.Filters;
 using TaskManager.API.Middlewares;
+using TaskManager.Application.Interfaces;
+using TaskManager.Application.Services;
+using TaskManager.Infrastructure;
 using TaskManager.Infrastructure.Data;
-
+using TaskManager.Infrastructure.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Controllers
@@ -20,6 +23,8 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
     options.SuppressModelStateInvalidFilter = true;
 });
 
+
+
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -29,8 +34,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Dependency Injection
-builder.Services.AddScoped<TaskManager.Application.Interfaces.ITaskService, TaskManager.Application.Interfaces.TaskService>();
-
+builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 // Health Checks
 builder.Services.AddHealthChecks();
 
