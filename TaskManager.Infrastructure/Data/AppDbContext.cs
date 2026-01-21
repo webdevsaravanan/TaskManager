@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Domain.Entities;
 
-namespace TaskManager.Infrastructure.Data;
-
 public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)
@@ -10,5 +8,5 @@ public class AppDbContext : DbContext
     {
     }
 
-    public DbSet<TaskItem> Tasks => Set<TaskItem>();
+    public DbSet<TaskItem> Tasks { get; set; }
 }
